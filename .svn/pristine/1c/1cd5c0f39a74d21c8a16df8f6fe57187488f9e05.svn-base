@@ -1,0 +1,207 @@
+﻿namespace ImageCompareGui
+{
+    partial class Form1
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.lblOriginal = new System.Windows.Forms.Label();
+            this.lblComparing = new System.Windows.Forms.Label();
+            this.txtOriginal = new System.Windows.Forms.TextBox();
+            this.txtComparing = new System.Windows.Forms.TextBox();
+            this.btnOriginalLocation = new System.Windows.Forms.Button();
+            this.btnComparingLocation = new System.Windows.Forms.Button();
+            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.btnStartPython = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupBox1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // lblOriginal
+            // 
+            this.lblOriginal.AutoSize = true;
+            this.lblOriginal.Location = new System.Drawing.Point(3, 34);
+            this.lblOriginal.Name = "lblOriginal";
+            this.lblOriginal.Size = new System.Drawing.Size(119, 17);
+            this.lblOriginal.TabIndex = 0;
+            this.lblOriginal.Text = "Original Location:";
+            this.lblOriginal.UseWaitCursor = true;
+            this.lblOriginal.Click += new System.EventHandler(this.label1_Click);
+            // 
+            // lblComparing
+            // 
+            this.lblComparing.AutoSize = true;
+            this.lblComparing.Location = new System.Drawing.Point(3, 67);
+            this.lblComparing.Name = "lblComparing";
+            this.lblComparing.Size = new System.Drawing.Size(138, 17);
+            this.lblComparing.TabIndex = 1;
+            this.lblComparing.Text = "Comparing Location:";
+            this.lblComparing.UseWaitCursor = true;
+            // 
+            // txtOriginal
+            // 
+            this.txtOriginal.Location = new System.Drawing.Point(147, 29);
+            this.txtOriginal.Name = "txtOriginal";
+            this.txtOriginal.Size = new System.Drawing.Size(253, 22);
+            this.txtOriginal.TabIndex = 2;
+            this.txtOriginal.Text = "\\\\intellignas0.intelligrated.com\\intelligrated\\Continous Improvement\\ICW\\Baseline" +
+    "";
+            this.txtOriginal.UseWaitCursor = true;
+            // 
+            // txtComparing
+            // 
+            this.txtComparing.Location = new System.Drawing.Point(147, 67);
+            this.txtComparing.Name = "txtComparing";
+            this.txtComparing.Size = new System.Drawing.Size(252, 22);
+            this.txtComparing.TabIndex = 3;
+            this.txtComparing.Text = "\\\\intellignas0.intelligrated.com\\intelligrated\\Continous Improvement\\ICW\\";
+            this.txtComparing.UseWaitCursor = true;
+            // 
+            // btnOriginalLocation
+            // 
+            this.btnOriginalLocation.Location = new System.Drawing.Point(400, 28);
+            this.btnOriginalLocation.Name = "btnOriginalLocation";
+            this.btnOriginalLocation.Size = new System.Drawing.Size(41, 23);
+            this.btnOriginalLocation.TabIndex = 4;
+            this.btnOriginalLocation.Text = "...";
+            this.btnOriginalLocation.UseVisualStyleBackColor = true;
+            this.btnOriginalLocation.UseWaitCursor = true;
+            this.btnOriginalLocation.Click += new System.EventHandler(this.btnOriginalLocation_Click);
+            // 
+            // btnComparingLocation
+            // 
+            this.btnComparingLocation.Location = new System.Drawing.Point(400, 67);
+            this.btnComparingLocation.Name = "btnComparingLocation";
+            this.btnComparingLocation.Size = new System.Drawing.Size(41, 23);
+            this.btnComparingLocation.TabIndex = 5;
+            this.btnComparingLocation.Text = "...";
+            this.btnComparingLocation.UseVisualStyleBackColor = true;
+            this.btnComparingLocation.UseWaitCursor = true;
+            this.btnComparingLocation.Click += new System.EventHandler(this.btnComparingLocation_Click);
+            // 
+            // richTextBoxLog
+            // 
+            this.richTextBoxLog.Location = new System.Drawing.Point(9, 176);
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.Size = new System.Drawing.Size(447, 179);
+            this.richTextBoxLog.TabIndex = 6;
+            this.richTextBoxLog.Text = "";
+            this.richTextBoxLog.UseWaitCursor = true;
+            // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(260, 123);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(181, 29);
+            this.btnStart.TabIndex = 7;
+            this.btnStart.Text = "Start Image Compare";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.UseWaitCursor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnStartPython
+            // 
+            this.btnStartPython.Location = new System.Drawing.Point(133, 361);
+            this.btnStartPython.Name = "btnStartPython";
+            this.btnStartPython.Size = new System.Drawing.Size(194, 29);
+            this.btnStartPython.TabIndex = 8;
+            this.btnStartPython.Text = "Start ICW Image Capture";
+            this.btnStartPython.UseVisualStyleBackColor = true;
+            this.btnStartPython.UseWaitCursor = true;
+            this.btnStartPython.Click += new System.EventHandler(this.btnStartPython_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(6, 123);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(181, 29);
+            this.btnCancel.TabIndex = 9;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.UseWaitCursor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.txtComparing);
+            this.groupBox1.Controls.Add(this.btnCancel);
+            this.groupBox1.Controls.Add(this.txtOriginal);
+            this.groupBox1.Controls.Add(this.lblComparing);
+            this.groupBox1.Controls.Add(this.btnStart);
+            this.groupBox1.Controls.Add(this.lblOriginal);
+            this.groupBox1.Controls.Add(this.btnOriginalLocation);
+            this.groupBox1.Controls.Add(this.btnComparingLocation);
+            this.groupBox1.Location = new System.Drawing.Point(9, 12);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(447, 158);
+            this.groupBox1.TabIndex = 10;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Image Paths";
+            this.groupBox1.UseWaitCursor = true;
+            this.groupBox1.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(468, 399);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnStartPython);
+            this.Controls.Add(this.richTextBoxLog);
+            this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Form1";
+            this.Text = "Photo Comparison";
+            this.UseWaitCursor = true;
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.ResumeLayout(false);
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label lblOriginal;
+        private System.Windows.Forms.Label lblComparing;
+        private System.Windows.Forms.TextBox txtOriginal;
+        private System.Windows.Forms.TextBox txtComparing;
+        private System.Windows.Forms.Button btnOriginalLocation;
+        private System.Windows.Forms.Button btnComparingLocation;
+        public System.Windows.Forms.RichTextBox richTextBoxLog;
+        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button btnStartPython;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.GroupBox groupBox1;
+    }
+}
+

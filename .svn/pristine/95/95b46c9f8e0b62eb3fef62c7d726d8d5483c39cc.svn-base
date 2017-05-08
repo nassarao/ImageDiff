@@ -1,0 +1,179 @@
+﻿using ImageDiff;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+
+namespace ImageCompareGui
+{
+    public partial class Form1 : Form
+    {
+        FormData data;
+        delegate void SetTextCallback(string text);
+        ImageComparer imageComparer = new ImageComparer();
+       
+        public Form1()
+        {
+            InitializeComponent();
+            richTextBoxLog.ReadOnly = true;
+            imageComparer.WorkPerformed += OnWorkPerformed;
+        }
+
+        //Selects Original Path with Folder browser dialog
+        private void btnOriginalLocation_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = @"\\intellignas0.intelligrated.com\intelligrated\Continous Improvement\ICW\Baseline";
+            if (fbd.ShowDialog() == DialogResult.OK)
+                txtOriginal.Text = fbd.SelectedPath;
+        }
+
+        //Selects Comparing Path with Folder browser dialog
+        private void btnComparingLocation_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = @"\\intellignas0.intelligrated.com\intelligrated\Continous Improvement\ICW\";
+            if (fbd.ShowDialog() == DialogResult.OK)
+                txtComparing.Text = fbd.SelectedPath;
+        }
+
+        //Start image comparison
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            btnCancel.Enabled = true;
+            btnStart.Enabled = false;
+          
+
+            richTextBoxLog.Text = "";
+            //Collects data from form and stores in obj
+            data = new FormData(txtOriginal.Text, txtComparing.Text);
+            Logging logger = new Logging(data.ResultsDirectory);
+            imageComparer.WorkPerformed += logger.OnWorkPerformed;
+
+            if (!backgroundWorker.IsBusy)
+                backgroundWorker.RunWorkerAsync(imageComparer);
+
+         
+
+        }
+
+        //Subscribe to event performs this method.
+        private void OnWorkPerformed(object source, WorkPerformedArgs args)
+        {
+            AppendLog(args.Data);
+        
+        }
+
+        //Writes to the richtext box also to a log file
+        private void AppendLog(string text)
+        {
+            //Required workaround because of conflicting threads
+            if (this.richTextBoxLog.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(AppendLog);
+                this.Invoke(d, new object[] { text });
+            }
+            else
+            {
+                richTextBoxLog.Text += Environment.NewLine;
+                richTextBoxLog.Text += text;
+            }
+        }
+
+        //Executes Python exe file to scrape images from ICW
+        private void btnStartPython_Click(object sender, EventArgs e)
+        {
+            //try catch
+            try
+            {
+                FileInfo file = new FileInfo(@"\\intellignas0.intelligrated.com\intelligrated\Continous Improvement\ICW\tools\ICWSaveView.exe");
+
+                ProcessStartInfo pythonInfo = new ProcessStartInfo();
+                pythonInfo.FileName = @"\\intellignas0.intelligrated.com\intelligrated\Continous Improvement\ICW\tools\ICWSaveView.exe";
+
+                pythonInfo.CreateNoWindow = false;
+                pythonInfo.UseShellExecute = true;
+                pythonInfo.WorkingDirectory = Path.GetDirectoryName(pythonInfo.FileName);
+
+                Process python = Process.Start(pythonInfo);
+                python.WaitForExit();
+                python.Close();
+            }
+            catch(Exception ex) { MessageBox.Show(ex.Message); }
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            if (backgroundWorker.IsBusy)
+                backgroundWorker.CancelAsync();
+
+            btnCancel.Enabled = false;
+
+
+        }
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ImageComparer imageComparer = (ImageComparer)e.Argument;
+
+            List<FileInfo> Oimgs = imageComparer.GetImages(data.OriginalDirectory);
+            List<FileInfo> Cimgs = imageComparer.GetImages(data.ComparingDirectory);
+            imageComparer.FilterMatches(Oimgs, Cimgs);
+            if (Oimgs.Count == 0 || Cimgs.Count == 0)
+                return;
+
+            CompareOptions options = new CompareOptions()
+            {
+                BoundingBoxColor = Color.Cyan,
+                BoundingBoxPadding = 5
+            };
+
+            var comparer = new BitmapComparer(options);
+
+            for (int i = 0; i < Oimgs.Count; i++)
+            {
+                if (!backgroundWorker.CancellationPending)
+                {
+                    try
+                    {
+
+                        string diff = imageComparer.CompareBitMaps(new Bitmap(Oimgs[i].FullName), new Bitmap(Cimgs[i].FullName), Oimgs[i].Name).ToString();
+                        if (diff != "0")
+                        {
+                            string newSave = String.Format(data.ResultsDirectory + Oimgs[i].Name);
+                            Bitmap combine = comparer.Compare(new Bitmap(Oimgs[i].FullName), new Bitmap(Cimgs[i].FullName));
+                            combine.Save(newSave);
+                        }
+                        double percentage = ((Convert.ToDouble(i + 1) / Oimgs.Count) * 100);
+                        backgroundWorker.ReportProgress(Convert.ToInt32(percentage));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progress.Value = e.ProgressPercentage;
+            progress.Update();
+        }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            MessageBox.Show("Done", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            progress.Value = 0;
+            progress.Update();
+
+            btnStart.Enabled = true;
+            
+
+        }
+    }
+}

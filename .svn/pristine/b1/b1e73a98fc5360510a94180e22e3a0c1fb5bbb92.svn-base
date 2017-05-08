@@ -1,0 +1,98 @@
+﻿using ImageDiff;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+
+
+
+namespace ImageCompareGui
+{
+    public class WorkPerformedArgs : EventArgs
+    {
+        public string Data { get; set; }
+    }
+    public class ImageComparer
+    {
+        private FormData Data;
+
+
+        //Declaring delegat/event
+        public event EventHandler<WorkPerformedArgs> WorkPerformed;
+
+
+        //EventFormat Call this elsewhere to raise an event
+        protected virtual void OnWorkPerformed(string data)
+        {
+            WorkPerformed?.Invoke(this, new WorkPerformedArgs() { Data = data });
+        }
+        public ImageComparer(FormData data)
+        {
+            Data = data;
+        }
+
+        //Code to compare images
+        public double CompareBitMaps(Bitmap img1, Bitmap img2, string fileName)
+        {
+            OnWorkPerformed(String.Format("Comparing image {0}...", fileName));
+            if (img1.Size != img2.Size)
+            {
+                return 100;
+            }
+
+            float diff = 0;
+
+            for (int y = 0; y < img1.Height; y++)
+            {
+                for (int x = 0; x < img1.Width; x++)
+                {
+                    diff += (float)Math.Abs(img1.GetPixel(x, y).R - img2.GetPixel(x, y).R) / 255;
+                    diff += (float)Math.Abs(img1.GetPixel(x, y).G - img2.GetPixel(x, y).G) / 255;
+                    diff += (float)Math.Abs(img1.GetPixel(x, y).B - img2.GetPixel(x, y).B) / 255;
+                }
+            }
+            diff = diff * 100 / (img1.Width * img1.Height * 3);
+            OnWorkPerformed(String.Format("\tdiff: {0} %", Math.Round(diff, 2)));
+            return Math.Round(diff, 2);
+        }
+
+        //Returns all jpgs in a dir
+        public List<FileInfo> GetImages(string path)
+        {
+
+            OnWorkPerformed("Loading Images " + path);
+            DirectoryInfo dir = new DirectoryInfo(path);
+            if (dir.Exists)
+                return dir.GetFiles("*.jpg").ToList();
+
+            else
+                return null;
+        }
+
+        public void FilterMatches(List<FileInfo> one, List<FileInfo> two)
+        {
+            for (int i = 0; i < one.Count; i++)
+            {
+                if (!two.Exists(x => x.Name == one[i].Name))
+                {
+                    string name = one[i].Name;
+                    one.RemoveAt(i);
+                    OnWorkPerformed(String.Format("Original {0} Does not have a match.Removed from list.", name ));
+                }
+            }
+            for (int i = 0; i < two.Count; i++)
+            {
+                if (!one.Exists(x => x.Name == two[i].Name))
+                {
+                    string name = two[i].Name;
+                    two.RemoveAt(i);
+                    OnWorkPerformed(String.Format("Comparing {0} Does not have a match.Removed from list.", name));
+                }
+            }
+
+        }
+
+    }
+
+}

@@ -1,0 +1,34 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageCompareGui", "ImageCompareGui\ImageCompareGui.csproj", "{95E05A29-0797-4118-93C4-1A37F7539AF1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ImageDiff", "ImageDiff-master\src\ImageDiff\ImageDiff.csproj", "{8C9C4ABC-4D3A-4DCD-AEE1-95E07E4FAE9F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnsafeImageProcessing", "UnsafeImageProcessing\UnsafeImageProcessing.csproj", "{04E8527A-8B12-4B3E-AAAD-7BA613CCCF5D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{95E05A29-0797-4118-93C4-1A37F7539AF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{95E05A29-0797-4118-93C4-1A37F7539AF1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{95E05A29-0797-4118-93C4-1A37F7539AF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{95E05A29-0797-4118-93C4-1A37F7539AF1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8C9C4ABC-4D3A-4DCD-AEE1-95E07E4FAE9F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8C9C4ABC-4D3A-4DCD-AEE1-95E07E4FAE9F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8C9C4ABC-4D3A-4DCD-AEE1-95E07E4FAE9F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8C9C4ABC-4D3A-4DCD-AEE1-95E07E4FAE9F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{04E8527A-8B12-4B3E-AAAD-7BA613CCCF5D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{04E8527A-8B12-4B3E-AAAD-7BA613CCCF5D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{04E8527A-8B12-4B3E-AAAD-7BA613CCCF5D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{04E8527A-8B12-4B3E-AAAD-7BA613CCCF5D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

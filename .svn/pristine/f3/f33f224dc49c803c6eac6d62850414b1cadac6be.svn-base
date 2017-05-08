@@ -1,0 +1,27 @@
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace ImageCompareGui
+{
+    public class FormData
+    {
+        public string OriginalDirectory { get; set; }
+        public string ComparingDirectory { get; set; }
+        public string Log { get; set; }
+        public string ResultsDirectory { get; set; }
+
+        public FormData(string Odir, string Cdir)
+        {
+            OriginalDirectory = Odir;
+            ComparingDirectory = Cdir;
+            ResultsDirectory = Cdir + "\\Results\\";
+            Directory.CreateDirectory(ResultsDirectory);
+            Log = ResultsDirectory + "Log.txt";
+            File.Create(Log).Close();
+        }
+    }
+}

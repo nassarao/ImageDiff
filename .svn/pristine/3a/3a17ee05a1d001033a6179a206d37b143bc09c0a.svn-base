@@ -1,0 +1,240 @@
+﻿using ImageDiff;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
+using System.Configuration;
+
+namespace ImageCompareGui
+{
+    public partial class Form1 : Form
+    {
+        FormData data;
+        delegate void SetTextCallback(string text);
+        ImageComparer imageComparer = new ImageComparer();
+
+        public Form1()
+        {
+            InitializeComponent();
+            richTextBoxLog.ReadOnly = true;
+            txtBaseline.Text = ConfigurationManager.AppSettings["BaselineDirectory"];
+            txtRuntime.Text = ConfigurationManager.AppSettings["RuntimeDirectory"];
+
+            imageComparer.WorkPerformed += OnWorkPerformed;
+        }
+
+        //Selects Original Path with Folder browser dialog
+        private void btnBaselineLocation_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = ConfigurationManager.AppSettings["BaselineDirectory"];
+            if (fbd.ShowDialog() == DialogResult.OK)
+                txtBaseline.Text = fbd.SelectedPath;
+        }
+
+        //Selects Comparing Path with Folder browser dialog
+        private void btnRuntimeLocation_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = fbd.SelectedPath = ConfigurationManager.AppSettings["RuntimeDirectory"];
+            if (fbd.ShowDialog() == DialogResult.OK)
+                txtRuntime.Text = fbd.SelectedPath;
+        }
+
+        //Start image comparison
+        private void btnStart_Click(object sender, EventArgs e)
+        {
+            btnCancel.Enabled = true;
+            btnStart.Enabled = false;
+
+
+            richTextBoxLog.Text = "";
+            //Collects data from form and stores in obj
+            data = new FormData(txtBaseline.Text, txtRuntime.Text);
+            Logging logger = new Logging(data.ResultsDirectory);
+            imageComparer.WorkPerformed += logger.OnWorkPerformed;
+
+            if (!backgroundWorker.IsBusy)
+                backgroundWorker.RunWorkerAsync(imageComparer);
+
+
+
+        }
+
+        //Subscribe to event performs this method.
+        private void OnWorkPerformed(object source, WorkPerformedArgs args)
+        {
+            AppendLog(args.Data);
+
+        }
+
+        //Writes to the richtext box also to a log file
+        private void AppendLog(string text)
+        {
+            //Required workaround because of conflicting threads
+            if (this.richTextBoxLog.InvokeRequired)
+            {
+                SetTextCallback d = new SetTextCallback(AppendLog);
+                this.Invoke(d, new object[] { text });
+            }
+            else
+            {
+                richTextBoxLog.Text += Environment.NewLine;
+                richTextBoxLog.Text += text;
+            }
+        }
+
+        //Executes Python exe file to scrape images from ICW
+        private void btnStartPython_Click(object sender, EventArgs e)
+        {
+            //try catch
+            try
+            {
+
+
+                ProcessStartInfo pythonInfo = new ProcessStartInfo();
+                pythonInfo.FileName = ConfigurationManager.AppSettings["PythonPath"];
+
+                pythonInfo.CreateNoWindow = false;
+                pythonInfo.UseShellExecute = true;
+                pythonInfo.WorkingDirectory = Path.GetDirectoryName(pythonInfo.FileName);
+
+                Process python = Process.Start(pythonInfo);
+                python.WaitForExit();
+                python.Close();
+            }
+            catch (Exception ex) { MessageBox.Show(ex.Message); }
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+            if (backgroundWorker.IsBusy)
+                backgroundWorker.CancelAsync();
+
+            btnCancel.Enabled = false;
+        }
+
+        private void backgroundWorker_DoWork(object sender, DoWorkEventArgs e)
+        {
+            ImageComparer imageComparer = (ImageComparer)e.Argument;
+            CompareOptions options = new CompareOptions()
+            {
+                BoundingBoxColor = Color.Cyan,
+                BoundingBoxPadding = 5
+            };
+
+            List<FileInfo> Bimgs = imageComparer.GetImages(data.BaselineDirectory);
+            List<FileInfo> Rimgs = imageComparer.GetImages(data.RuntimeDirectory);
+            if (Bimgs.Count == 0 || Rimgs.Count == 0)
+                return;
+
+            List<string> matchedFiles = imageComparer.FilterMatches(Bimgs, Rimgs);
+
+            var comparer = new BitmapComparer(options);
+
+            int counter = 0;
+            foreach (string name in matchedFiles)
+            {
+                counter++;
+                FileInfo baseline = Bimgs.Find(x => x.Name == name);
+                FileInfo runtime = Rimgs.Find(x => x.Name == name);
+                if (!backgroundWorker.CancellationPending)
+                {
+                    try
+                    {
+                        imageComparer.CompareImages(comparer, baseline, runtime, data.ResultsDirectory);
+
+                        double percentage = ((double)counter / matchedFiles.Count) * 100.0;
+                        backgroundWorker.ReportProgress(Convert.ToInt32(percentage));
+                    }
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+            }
+        }
+
+
+
+        private void backgroundWorker_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            progress.Value = e.ProgressPercentage;
+            progress.Update();
+        }
+
+        private void backgroundWorker_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            MessageBox.Show("Done", "Message", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            progress.Value = 0;
+            progress.Update();
+
+            btnStart.Enabled = true;
+            List<FileInfo> resultImages = imageComparer.GetImages(data.ResultsDirectory);
+            if (resultImages.Count > 0)
+            {
+                ImageViewerForm imageViewer = new ImageViewerForm(resultImages);
+                imageViewer.WindowState = FormWindowState.Maximized;
+                imageViewer.data = data;
+                imageViewer.Show();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            ImageViewerForm imageViewer = new ImageViewerForm(imageComparer.GetImages(@"\\intellignas0.intelligrated.com\intelligrated\Continous Improvement\ICW\Results\2016-11-21_093037\Results"));
+            imageViewer.Show();
+        }
+
+        private void txtComparing_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void defaultValuesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            EditDefaultValues editForm = new EditDefaultValues();
+            editForm.Show();
+
+        }
+
+        private void exitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void imageViewerToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = fbd.SelectedPath = ConfigurationManager.AppSettings["RuntimeDirectory"];
+            if (fbd.ShowDialog() == DialogResult.OK)
+            {
+                FormData dataViewer;
+                try
+                {
+                    using (StreamReader reader = new StreamReader(fbd.SelectedPath + "\\" + "Log.txt"))
+                    {
+                        string baselineDir = reader.ReadLine().Replace("Loading Images", "").Trim();
+                        string runtimeDir = reader.ReadLine().Replace("Loading Images", "").Trim();
+                        dataViewer = new FormData(baselineDir, runtimeDir);
+
+                    }
+                    ImageViewerForm imageViewerForm = new ImageViewerForm(imageComparer.GetImages(fbd.SelectedPath));
+                    imageViewerForm.WindowState = FormWindowState.Maximized;
+                    imageViewerForm.data = dataViewer;
+                    imageViewerForm.Show();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "Message", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+
+            }
+
+        }
+    }
+}

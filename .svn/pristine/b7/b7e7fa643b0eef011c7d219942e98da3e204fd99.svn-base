@@ -1,0 +1,119 @@
+﻿using ImageCompareGui;
+using ImageDiff;
+using System;
+using System.Collections.Generic;
+using System.Drawing;
+using System.IO;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Windows.Forms;
+
+
+namespace ImageCompareGui
+{
+
+    public class ImageComparer
+    {
+        public Form1 form { get; set; }
+
+        public ImageComparer(Form1 form)
+        {
+            this.form = form;
+        }
+
+
+        public Bitmap Comparer(Bitmap firstImage, Bitmap secondImage)
+        {
+
+            var comparer = new BitmapComparer();
+            var diff = comparer.Compare(firstImage, secondImage);
+            return diff;
+        }
+
+
+        public double CompareBitMaps(Bitmap img1, Bitmap img2)
+        {
+            if (img1.Size != img2.Size)
+            {
+                return 100;
+            }
+
+            float diff = 0;
+
+            for (int y = 0; y < img1.Height; y++)
+            {
+                for (int x = 0; x < img1.Width; x++)
+                {
+                    diff += (float)Math.Abs(img1.GetPixel(x, y).R - img2.GetPixel(x, y).R) / 255;
+                    diff += (float)Math.Abs(img1.GetPixel(x, y).G - img2.GetPixel(x, y).G) / 255;
+                    diff += (float)Math.Abs(img1.GetPixel(x, y).B - img2.GetPixel(x, y).B) / 255;
+                }
+            }
+
+            diff = diff * 100 / (img1.Width * img1.Height * 3);
+            return Math.Round(diff, 2);
+        }
+
+        public List<FileInfo> GetImages(string path)
+        {
+            form.AppendLog("Loading Images " + path);
+            DirectoryInfo dir = new DirectoryInfo(path);
+            if (dir.Exists)
+                return dir.GetFiles("*.jpg").ToList();
+
+            else
+                return null;
+        }
+
+        public bool CompareFileNames(List<FileInfo> one, List<FileInfo> two)
+        {
+            form.AppendLog("Comparing File Names...");
+            one.OrderBy(x => x.Name);
+            two.OrderBy(x => x.Name);
+
+            if (one.Count > two.Count)
+                form.AppendLog("Comparing Directory has too few photos");
+            if (one.Count < two.Count)
+                form.AppendLog("Comparing Directory has too many photos");
+
+            int counter = 0;
+            foreach (FileInfo file in one)
+            {
+                if (file.Name != two[counter].Name)
+                {
+                    form.AppendLog("File Names do not mach up");
+                    return false;
+                }
+                counter++;
+            }
+            return true;
+
+       } 
+
+        public async Task<string> CompareListImages(List<FileInfo> Oimgs, List<FileInfo> Cimgs)
+        {
+
+            for (int i = 0; i < Oimgs.Count; i++)
+            {
+                form.AppendLog(String.Format("Comparing image {0}...", Oimgs[i].Name));
+                string diff = await Task.Factory.StartNew(() => CompareBitMaps(new Bitmap(Oimgs[i].FullName), new Bitmap(Cimgs[i].FullName)).ToString());
+
+                if (diff != "0")
+                {
+                    if (!Directory.Exists(form.getComparingPath() + "\\Results\\"))
+                        Directory.CreateDirectory(form.getComparingPath() + "\\Results\\");
+                    string newSave = String.Format(form.getComparingPath() + "\\Results\\{0}.jpg", Oimgs[i].Name);
+                    Bitmap combine = Comparer(new Bitmap(Oimgs[i].FullName), new Bitmap(Cimgs[i].FullName));
+                    combine.Save(newSave);
+
+                }
+                form.AppendLog(String.Format("\tdiff: {0} %", diff));
+
+            }
+
+            return "";
+        }
+    }
+
+}

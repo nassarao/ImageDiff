@@ -1,0 +1,290 @@
+﻿namespace ImageCompareGui
+{
+    partial class Form1
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
+
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
+        #region Windows Form Designer generated code
+
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
+            this.lblOriginal = new System.Windows.Forms.Label();
+            this.lblComparing = new System.Windows.Forms.Label();
+            this.txtBaseline = new System.Windows.Forms.TextBox();
+            this.txtRuntime = new System.Windows.Forms.TextBox();
+            this.btnBaselineLocation = new System.Windows.Forms.Button();
+            this.btnRuntimeLocation = new System.Windows.Forms.Button();
+            this.richTextBoxLog = new System.Windows.Forms.RichTextBox();
+            this.btnStart = new System.Windows.Forms.Button();
+            this.btnStartPython = new System.Windows.Forms.Button();
+            this.btnCancel = new System.Windows.Forms.Button();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.progress = new System.Windows.Forms.ProgressBar();
+            this.backgroundWorker = new System.ComponentModel.BackgroundWorker();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.openToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.imageViewerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.editToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.defaultValuesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.groupBox1.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
+            this.SuspendLayout();
+            // 
+            // lblOriginal
+            // 
+            this.lblOriginal.AutoSize = true;
+            this.lblOriginal.Location = new System.Drawing.Point(6, 50);
+            this.lblOriginal.Name = "lblOriginal";
+            this.lblOriginal.Size = new System.Drawing.Size(124, 17);
+            this.lblOriginal.TabIndex = 0;
+            this.lblOriginal.Text = "Baseline Location:";
+            // 
+            // lblComparing
+            // 
+            this.lblComparing.AutoSize = true;
+            this.lblComparing.Location = new System.Drawing.Point(3, 109);
+            this.lblComparing.Name = "lblComparing";
+            this.lblComparing.Size = new System.Drawing.Size(122, 17);
+            this.lblComparing.TabIndex = 1;
+            this.lblComparing.Text = "Runtime Location:";
+            // 
+            // txtBaseline
+            // 
+            this.txtBaseline.Location = new System.Drawing.Point(133, 47);
+            this.txtBaseline.Name = "txtBaseline";
+            this.txtBaseline.Size = new System.Drawing.Size(378, 22);
+            this.txtBaseline.TabIndex = 2;
+            // 
+            // txtRuntime
+            // 
+            this.txtRuntime.Location = new System.Drawing.Point(133, 109);
+            this.txtRuntime.Name = "txtRuntime";
+            this.txtRuntime.Size = new System.Drawing.Size(378, 22);
+            this.txtRuntime.TabIndex = 3;
+            this.txtRuntime.TextChanged += new System.EventHandler(this.txtComparing_TextChanged);
+            // 
+            // btnBaselineLocation
+            // 
+            this.btnBaselineLocation.Location = new System.Drawing.Point(517, 49);
+            this.btnBaselineLocation.Name = "btnBaselineLocation";
+            this.btnBaselineLocation.Size = new System.Drawing.Size(41, 23);
+            this.btnBaselineLocation.TabIndex = 4;
+            this.btnBaselineLocation.Text = "...";
+            this.btnBaselineLocation.UseVisualStyleBackColor = true;
+            this.btnBaselineLocation.Click += new System.EventHandler(this.btnBaselineLocation_Click);
+            // 
+            // btnRuntimeLocation
+            // 
+            this.btnRuntimeLocation.Location = new System.Drawing.Point(517, 109);
+            this.btnRuntimeLocation.Name = "btnRuntimeLocation";
+            this.btnRuntimeLocation.Size = new System.Drawing.Size(41, 23);
+            this.btnRuntimeLocation.TabIndex = 5;
+            this.btnRuntimeLocation.Text = "...";
+            this.btnRuntimeLocation.UseVisualStyleBackColor = true;
+            this.btnRuntimeLocation.Click += new System.EventHandler(this.btnRuntimeLocation_Click);
+            // 
+            // richTextBoxLog
+            // 
+            this.richTextBoxLog.Location = new System.Drawing.Point(9, 279);
+            this.richTextBoxLog.Name = "richTextBoxLog";
+            this.richTextBoxLog.Size = new System.Drawing.Size(564, 223);
+            this.richTextBoxLog.TabIndex = 6;
+            this.richTextBoxLog.Text = "";
+            // 
+            // btnStart
+            // 
+            this.btnStart.Location = new System.Drawing.Point(377, 176);
+            this.btnStart.Name = "btnStart";
+            this.btnStart.Size = new System.Drawing.Size(181, 29);
+            this.btnStart.TabIndex = 7;
+            this.btnStart.Text = "Start Image Compare";
+            this.btnStart.UseVisualStyleBackColor = true;
+            this.btnStart.Click += new System.EventHandler(this.btnStart_Click);
+            // 
+            // btnStartPython
+            // 
+            this.btnStartPython.Location = new System.Drawing.Point(201, 508);
+            this.btnStartPython.Name = "btnStartPython";
+            this.btnStartPython.Size = new System.Drawing.Size(194, 29);
+            this.btnStartPython.TabIndex = 8;
+            this.btnStartPython.Text = "Start ICW Image Capture";
+            this.btnStartPython.UseVisualStyleBackColor = true;
+            this.btnStartPython.Click += new System.EventHandler(this.btnStartPython_Click);
+            // 
+            // btnCancel
+            // 
+            this.btnCancel.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.btnCancel.Location = new System.Drawing.Point(6, 176);
+            this.btnCancel.Name = "btnCancel";
+            this.btnCancel.Size = new System.Drawing.Size(181, 29);
+            this.btnCancel.TabIndex = 9;
+            this.btnCancel.Text = "Cancel";
+            this.btnCancel.UseVisualStyleBackColor = true;
+            this.btnCancel.Click += new System.EventHandler(this.btnCancel_Click);
+            // 
+            // groupBox1
+            // 
+            this.groupBox1.BackColor = System.Drawing.Color.Transparent;
+            this.groupBox1.Controls.Add(this.progress);
+            this.groupBox1.Controls.Add(this.txtRuntime);
+            this.groupBox1.Controls.Add(this.btnCancel);
+            this.groupBox1.Controls.Add(this.txtBaseline);
+            this.groupBox1.Controls.Add(this.lblComparing);
+            this.groupBox1.Controls.Add(this.btnStart);
+            this.groupBox1.Controls.Add(this.lblOriginal);
+            this.groupBox1.Controls.Add(this.btnBaselineLocation);
+            this.groupBox1.Controls.Add(this.btnRuntimeLocation);
+            this.groupBox1.Location = new System.Drawing.Point(9, 36);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(564, 237);
+            this.groupBox1.TabIndex = 10;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "Image Paths";
+            // 
+            // progress
+            // 
+            this.progress.Location = new System.Drawing.Point(6, 211);
+            this.progress.Name = "progress";
+            this.progress.Size = new System.Drawing.Size(552, 23);
+            this.progress.TabIndex = 10;
+            this.progress.Click += new System.EventHandler(this.progress_Click);
+            // 
+            // backgroundWorker
+            // 
+            this.backgroundWorker.WorkerReportsProgress = true;
+            this.backgroundWorker.WorkerSupportsCancellation = true;
+            this.backgroundWorker.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorker_DoWork);
+            this.backgroundWorker.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorker_ProgressChanged);
+            this.backgroundWorker.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorker_RunWorkerCompleted);
+            // 
+            // menuStrip1
+            // 
+            this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.editToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(585, 28);
+            this.menuStrip1.TabIndex = 11;
+            this.menuStrip1.Text = "menuStrip1";
+            // 
+            // fileToolStripMenuItem
+            // 
+            this.fileToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.openToolStripMenuItem,
+            this.exitToolStripMenuItem});
+            this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
+            this.fileToolStripMenuItem.Size = new System.Drawing.Size(44, 24);
+            this.fileToolStripMenuItem.Text = "File";
+            // 
+            // openToolStripMenuItem
+            // 
+            this.openToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.imageViewerToolStripMenuItem});
+            this.openToolStripMenuItem.Name = "openToolStripMenuItem";
+            this.openToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
+            this.openToolStripMenuItem.Text = "Open";
+            // 
+            // imageViewerToolStripMenuItem
+            // 
+            this.imageViewerToolStripMenuItem.Name = "imageViewerToolStripMenuItem";
+            this.imageViewerToolStripMenuItem.Size = new System.Drawing.Size(171, 26);
+            this.imageViewerToolStripMenuItem.Text = "ImageViewer";
+            this.imageViewerToolStripMenuItem.Click += new System.EventHandler(this.imageViewerToolStripMenuItem_Click);
+            // 
+            // exitToolStripMenuItem
+            // 
+            this.exitToolStripMenuItem.Name = "exitToolStripMenuItem";
+            this.exitToolStripMenuItem.Size = new System.Drawing.Size(120, 26);
+            this.exitToolStripMenuItem.Text = "Exit";
+            this.exitToolStripMenuItem.Click += new System.EventHandler(this.exitToolStripMenuItem_Click);
+            // 
+            // editToolStripMenuItem
+            // 
+            this.editToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.defaultValuesToolStripMenuItem});
+            this.editToolStripMenuItem.Name = "editToolStripMenuItem";
+            this.editToolStripMenuItem.Size = new System.Drawing.Size(47, 24);
+            this.editToolStripMenuItem.Text = "Edit";
+            // 
+            // defaultValuesToolStripMenuItem
+            // 
+            this.defaultValuesToolStripMenuItem.Name = "defaultValuesToolStripMenuItem";
+            this.defaultValuesToolStripMenuItem.Size = new System.Drawing.Size(180, 26);
+            this.defaultValuesToolStripMenuItem.Text = "Default Values";
+            this.defaultValuesToolStripMenuItem.Click += new System.EventHandler(this.defaultValuesToolStripMenuItem_Click);
+            // 
+            // Form1
+            // 
+            this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
+            this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.SystemColors.ButtonFace;
+            this.CancelButton = this.btnCancel;
+            this.ClientSize = new System.Drawing.Size(585, 549);
+            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.btnStartPython);
+            this.Controls.Add(this.richTextBoxLog);
+            this.Controls.Add(this.menuStrip1);
+            this.Cursor = System.Windows.Forms.Cursors.Default;
+            this.DoubleBuffered = true;
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Name = "Form1";
+            this.Text = "Photo Comparison";
+            this.groupBox1.ResumeLayout(false);
+            this.groupBox1.PerformLayout();
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
+            this.ResumeLayout(false);
+            this.PerformLayout();
+
+        }
+
+        #endregion
+
+        private System.Windows.Forms.Label lblOriginal;
+        private System.Windows.Forms.Label lblComparing;
+        private System.Windows.Forms.TextBox txtBaseline;
+        private System.Windows.Forms.TextBox txtRuntime;
+        private System.Windows.Forms.Button btnBaselineLocation;
+        private System.Windows.Forms.Button btnRuntimeLocation;
+        private System.Windows.Forms.RichTextBox richTextBoxLog;
+        private System.Windows.Forms.Button btnStart;
+        private System.Windows.Forms.Button btnStartPython;
+        private System.Windows.Forms.Button btnCancel;
+        private System.Windows.Forms.GroupBox groupBox1;
+        private System.ComponentModel.BackgroundWorker backgroundWorker;
+        private System.Windows.Forms.ProgressBar progress;
+        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem openToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem imageViewerToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem exitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem editToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem defaultValuesToolStripMenuItem;
+    }
+}
+

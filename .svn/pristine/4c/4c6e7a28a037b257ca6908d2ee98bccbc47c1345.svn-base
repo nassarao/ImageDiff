@@ -1,0 +1,102 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Windows.Forms;
+
+namespace ImageCompareGui
+{
+    public partial class Form1 : Form
+    {
+        FormData data;
+        BackgroundWorker worker = new BackgroundWorker();
+
+        public Form1()
+        {
+            InitializeComponent();
+            worker.WorkerSupportsCancellation = true;
+            worker.WorkerReportsProgress = true;
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnOriginalLocation_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = @"\\intellignas0.intelligrated.com\intelligrated\Continous Improvement\ICW\Baseline";
+            if (fbd.ShowDialog() == DialogResult.OK)
+                txtOriginal.Text = fbd.SelectedPath;
+        }
+
+        private void btnComparingLocation_Click(object sender, EventArgs e)
+        {
+            FolderBrowserDialog fbd = new FolderBrowserDialog();
+            fbd.SelectedPath = @"\\intellignas0.intelligrated.com\intelligrated\Continous Improvement\ICW\";
+            if (fbd.ShowDialog() == DialogResult.OK)
+                txtComparing.Text = fbd.SelectedPath;
+        }
+
+        public string getComparingPath()
+        {
+            return txtComparing.Text;
+        }
+
+        private async void btnStart_Click(object sender, EventArgs e)
+        {
+            data = new FormData(txtOriginal.Text, txtComparing.Text);
+            ImageComparer imageComparer = new ImageComparer(this);
+
+            List<FileInfo> Oimgs = imageComparer.GetImages(data.OriginalDirectory);
+            List<FileInfo> Cimgs = imageComparer.GetImages(data.ComparingDirectory);
+
+
+            if (imageComparer.CompareFileNames(Oimgs, Cimgs))
+                try
+                {
+                    await imageComparer.CompareListImages(Oimgs, Cimgs);
+                }
+                catch (Exception ex) { MessageBox.Show(ex.Message); }
+                    
+
+            Application.DoEvents();
+            MessageBox.Show("Done!");
+        }
+
+        public void AppendLog(string text)
+        {
+            using (StreamWriter writer = new StreamWriter(data.Log,true))
+                writer.WriteLine(text);
+
+            richTextBoxLog.Text += Environment.NewLine;
+            richTextBoxLog.Text += text;
+        }
+
+        private void btnStartPython_Click(object sender, EventArgs e)
+        {
+            ProcessStartInfo pythonInfo = new ProcessStartInfo();
+            Process python;
+            pythonInfo.FileName = @"\\intellignas0.intelligrated.com\intelligrated\Continous Improvement\ICW\tools\ICWSaveView.exe";
+
+            pythonInfo.CreateNoWindow = false;
+            pythonInfo.UseShellExecute = true;
+
+            python = Process.Start(pythonInfo);
+            python.WaitForExit();
+            python.Close();
+        }
+
+        private void groupBox1_Enter(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnCancel_Click(object sender, EventArgs e)
+        {
+           
+        }
+    }
+}
